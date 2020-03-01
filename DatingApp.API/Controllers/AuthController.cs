@@ -48,6 +48,7 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
             Console.WriteLine("***AuthController.cs: Login() " + DateTime.Now.ToString());
+
             //See if there is a user with username & password
             var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
 
@@ -85,8 +86,6 @@ namespace DatingApp.API.Controllers
             return Ok(new {
                 token = tokenHandler.WriteToken(token)
             });
-
-            
         }
 
     }
