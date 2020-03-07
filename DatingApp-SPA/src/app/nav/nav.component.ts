@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
+import { AlertifyService } from '../_services/alertify.service';
 
 @Component({
   selector: 'app-nav',
@@ -9,7 +10,7 @@ import { AuthService } from '../_services/auth.service';
 
 export class NavComponent implements OnInit {
   model: any = {};
-  constructor(private authService: AuthService) { }
+  constructor(public authService: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit() {
   }
@@ -17,21 +18,19 @@ export class NavComponent implements OnInit {
   login() {
     console.log('*****nav.components.ts login() model:' + this.model + Date().toString());
     this.authService.login(this.model).subscribe(next => {
-      console.log('Logged in successfuly!');
+      this.alertify.success('Logged in successfuly!');
     }, error => {
-      console.log(error);
+      this.alertify.error(error);
     });
   }
 
   loggedIn() {
-    const token = localStorage.getItem('token');
-    // Short form for true statement.  !! will return a true or false. In this case, if token is not null, it will return true
-    return !!token;
+    return this.authService.loggedIn();
   }
 
   loggedOut() {
     localStorage.removeItem('token');
-    console.log('loggedOut');
+    this.alertify.message('loggedOut');
   }
 
 

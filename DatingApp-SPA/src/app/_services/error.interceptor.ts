@@ -10,16 +10,16 @@ export class ErrorInterceptor implements HttpInterceptor {
     next: import('@angular/common/http').HttpHandler
   ): import('rxjs').Observable<import('@angular/common/http').HttpEvent<any>> {
     return next.handle(req).pipe(
-      catchError(httpResponseError => {
-        if (httpResponseError.status === 401) {
-          return throwError(httpResponseError.statusText);
+      catchError(errorResponse => {
+        if (errorResponse.status === 401) {
+          return throwError(errorResponse.statusText);
         }
-        if (httpResponseError instanceof HttpErrorResponse) {
-          const applicationError = httpResponseError.headers.get('Application-Error');
+        if (errorResponse instanceof HttpErrorResponse) {
+          const applicationError = errorResponse.headers.get('Application-Error');
           if (applicationError) {
             return throwError(applicationError);
           }
-          const serverError = httpResponseError.error;
+          const serverError = errorResponse.error;
           let modalStateErrors = '';
           if (serverError.errors && typeof serverError.errors === 'object') {
             for (const key in serverError.errors) {

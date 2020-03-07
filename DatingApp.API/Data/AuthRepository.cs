@@ -21,7 +21,7 @@ namespace DatingApp.API.Data
             if (user == null) return null;
 
             if(!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt)) return null;
-
+            Console.WriteLine("***AuthRepository.cs: Login() - user: " + user.ToString());
             return user;
 
         }
